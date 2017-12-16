@@ -1,7 +1,9 @@
 # proptest-quickcheck-interop
 
 [![Build Status](https://travis-ci.org/Centril/proptest-quickcheck-interop.svg?branch=master)](https://travis-ci.org/Centril/proptest-quickcheck-interop)
-[![](http://meritbadge.herokuapp.com/proptest-quickcheck-interop)](https://crates.io/crates/proptest-quickcheck-interop)[`proptest`] is a property testing framework (i.e., the [`QuickCheck`] family)
+[![](http://meritbadge.herokuapp.com/proptest-quickcheck-interop)](https://crates.io/crates/proptest-quickcheck-interop)
+
+[`proptest`] is a property testing framework (i.e., the [`QuickCheck`] family)
 inspired by the [Hypothesis](http://hypothesis.works/) framework for
 Python.
 
