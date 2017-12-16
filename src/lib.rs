@@ -16,7 +16,7 @@
 //!
 //! **This crate provides interoperability between quickcheck and proptest.**
 //! Currently, this is one way - if you've implemented quickcheck's
-//! [`Arbitrary`] trait as well as [`Debug`] (a temporary requirement)
+//! [`Arbitrary`] trait as well as [`Debug`], which is a temporary requirement,
 //! then you may get back the equivalent [`Strategy`] in proptest.
 //!
 //! ## Status of this crate
@@ -49,7 +49,7 @@
 //!
 //! quickcheck = "0.5.0"
 //! proptest   = "0.3.2"
-//! proptest_quickcheck_interop = "1.0.1"
+//! proptest_quickcheck_interop = "1.0.2"
 //! ```
 //!
 //! Let's now assume that `usize` is a complex type for which you have
@@ -87,8 +87,8 @@
 //! you may instead use [`from_qc_sized(size)`][`from_qc_sized`]. If you use,
 //! [`from_qc`], then the default size used by quickcheck is used.
 //!
-//! [`from_qc`]: https://docs.rs/proptest-quickcheck-interop/1.0.1/proptest_quickcheck_interop/fn.from_qc.html
-//! [`from_qc_sized`]: https://docs.rs/proptest-quickcheck-interop/1.0.1/proptest_quickcheck_interop/fn.from_qc_sized.html
+//! [`from_qc`]: https://docs.rs/proptest-quickcheck-interop/1.0.2/proptest_quickcheck_interop/fn.from_qc.html
+//! [`from_qc_sized`]: https://docs.rs/proptest-quickcheck-interop/1.0.2/proptest_quickcheck_interop/fn.from_qc_sized.html
 //!
 //! [changelog]:
 //! https://github.com/Centril/proptest-quickcheck-interop/blob/master/CHANGELOG.md
@@ -137,8 +137,9 @@ use proptest::test_runner::TestRunner;
 /// implementation of `Arbitrary`. If you want to provide some other value,
 /// you may instead use [`from_qc_sized`].
 ///
+/// [`Debug`]: https://doc.rust-lang.org/nightly/std/fmt/trait.Debug.html
 /// [`Arbitrary`]: https://docs.rs/quickcheck/0.5.0/quickcheck/trait.Arbitrary.html
-/// [`from_qc_sized`]: https://docs.rs/proptest-quickcheck-interop/1.0.1/proptest_quickcheck_interop/fn.from_qc_sized.html
+/// [`from_qc_sized`]: https://docs.rs/proptest-quickcheck-interop/1.0.2/proptest_quickcheck_interop/fn.from_qc_sized.html
 /// [`quickcheck`]: https://crates.io/crates/quickcheck
 /// [`Strategy`]: https://docs.rs/proptest/0.3.2/proptest/strategy/trait.Strategy.html
 pub fn from_qc<A: Arbitrary + Debug>() -> QCStrategy<A> {
@@ -165,6 +166,7 @@ fn qc_gen_size() -> usize {
 /// Using this version, you may provide a size parameter controlling the size
 /// of inputs. This parameter is passed to the implementation of `Arbitrary`.
 ///
+/// [`Debug`]: https://doc.rust-lang.org/nightly/std/fmt/trait.Debug.html
 /// [`Arbitrary`]: https://docs.rs/quickcheck/0.5.0/quickcheck/trait.Arbitrary.html
 /// [`quickcheck`]: https://crates.io/crates/quickcheck
 /// [`Strategy`]: https://docs.rs/proptest/0.3.2/proptest/strategy/trait.Strategy.html
@@ -178,8 +180,8 @@ pub fn from_qc_sized<A: Arbitrary + Debug>(size: usize) -> QCStrategy<A> {
 
 /// `QCStrategy` is a [`Strategy`] that provides interoperability with
 /// [`quickcheck`]'s [`Arbitrary`] trait. If you have any type implementing
-/// [`Arbitrary`] and [`Debug`] (a temporary requirement) then you may get
-/// back the equivalent Strategy in proptest.
+/// [`Arbitrary`] and [`Debug`], which a temporary requirement, then you may
+/// get back the equivalent Strategy in proptest.
 ///
 /// [`Debug`]: https://doc.rust-lang.org/nightly/std/fmt/trait.Debug.html
 /// [`Arbitrary`]: https://docs.rs/quickcheck/0.5.0/quickcheck/trait.Arbitrary.html
@@ -193,7 +195,7 @@ pub struct QCStrategy<A: Arbitrary + Debug> {
 
 /// The [`ValueTree`] implementation for [`QCStrategy`].
 ///
-/// [`QCStrategy`]: struct.QCStrategy
+/// [`QCStrategy`]: https://docs.rs/proptest-quickcheck-interop/1.0.2/proptest_quickcheck_interop/struct.QCStrategy.html
 /// [`ValueTree`]: https://docs.rs/proptest/0.3.2/proptest/strategy/trait.ValueTree.html
 pub struct QCValueTree<A: Arbitrary + Debug> {
     curr: A,
@@ -203,9 +205,11 @@ pub struct QCValueTree<A: Arbitrary + Debug> {
 
 impl<A: Arbitrary + Debug> QCStrategy<A> {
     /// Constructs a new `QCStrategy` given a `size` parameter that:
+    ///
     /// > controls the size of random values generated. For example, it
     /// > specifies the maximum length of a randomly generated vector and also
     /// > will specify the maximum magnitude of a randomly generated number.
+    ///
     /// as defined by [`quickcheck`]
     ///
     /// [`quickcheck`]: https://crates.io/crates/quickcheck

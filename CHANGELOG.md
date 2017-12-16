@@ -1,3 +1,9 @@
+# 1.0.2
+
+## Fixes
+
+- More documentation fixes.
+
 # 1.0.1
 
 ## Fixes
