@@ -1,3 +1,9 @@
+# 1.0.3
+
+## Fixes
+
+- Fixed README.
+
 # 1.0.2
 
 ## Fixes
