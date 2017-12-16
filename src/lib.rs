@@ -23,9 +23,9 @@
 //!
 //! This crate is unlikely to see major changes. Any breaking changes
 //! are only likely to come as a result of changes in the dependencies used by
-//! this crate, in particular proptest or quickcheck. Since neither of those
-//! crates have reached `1.0.0` neither has this crate. Once that happen, this
-//! crate will go `1.0.0` as well.
+//! this crate, in particular proptest or quickcheck. When any of those crates
+//! make breaking changes that affect this crate, then the major version of
+//! this crate will be bumped.
 //!
 //! See the [changelog] for a full list of substantial historical changes,
 //! breaking and otherwise.
@@ -49,7 +49,7 @@
 //!
 //! quickcheck = "0.5.0"
 //! proptest   = "0.3.2"
-//! proptest_quickcheck_interop = "0.1.0"
+//! proptest_quickcheck_interop = "1.0.1"
 //! ```
 //!
 //! Let's now assume that `usize` is a complex type for which you have
@@ -87,8 +87,8 @@
 //! you may instead use [`from_qc_sized(size)`][`from_qc_sized`]. If you use,
 //! [`from_qc`], then the default size used by quickcheck is used.
 //!
-//! [`from_qc`]: https://docs.rs/proptest/0.1.0/proptest-quickcheck-interop/fn.from_qc.html
-//! [`from_qc_sized`]: https://docs.rs/proptest/0.1.0/proptest-quickcheck-interop/fn.from_qc_sized.html
+//! [`from_qc`]: https://docs.rs/proptest-quickcheck-interop/1.0.1/proptest_quickcheck_interop/fn.from_qc.html
+//! [`from_qc_sized`]: https://docs.rs/proptest-quickcheck-interop/1.0.1/proptest_quickcheck_interop/fn.from_qc_sized.html
 //!
 //! [changelog]:
 //! https://github.com/Centril/proptest-quickcheck-interop/blob/master/CHANGELOG.md
@@ -138,7 +138,7 @@ use proptest::test_runner::TestRunner;
 /// you may instead use [`from_qc_sized`].
 ///
 /// [`Arbitrary`]: https://docs.rs/quickcheck/0.5.0/quickcheck/trait.Arbitrary.html
-/// [`from_qc_sized`]: function.from_qc_sized
+/// [`from_qc_sized`]: https://docs.rs/proptest-quickcheck-interop/1.0.1/proptest_quickcheck_interop/fn.from_qc_sized.html
 /// [`quickcheck`]: https://crates.io/crates/quickcheck
 /// [`Strategy`]: https://docs.rs/proptest/0.3.2/proptest/strategy/trait.Strategy.html
 pub fn from_qc<A: Arbitrary + Debug>() -> QCStrategy<A> {
