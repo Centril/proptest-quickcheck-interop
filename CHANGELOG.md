@@ -1,4 +1,10 @@
-# 0.1.0
+# 1.0.1
+
+## Fixes
+
+- Documentation fixes.
+
+# 1.0.0
 
 ## New Additions
 
