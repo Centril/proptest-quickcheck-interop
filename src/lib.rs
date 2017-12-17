@@ -49,7 +49,7 @@
 //!
 //! quickcheck = "0.5.0"
 //! proptest   = "0.3.2"
-//! proptest_quickcheck_interop = "1.0.3"
+//! proptest_quickcheck_interop = "1.0.4"
 //! ```
 //!
 //! Let's now assume that `usize` is a complex type for which you have
@@ -87,8 +87,8 @@
 //! you may instead use [`from_qc_sized(size)`][`from_qc_sized`]. If you use,
 //! [`from_qc`], then the default size used by quickcheck is used.
 //!
-//! [`from_qc`]: https://docs.rs/proptest-quickcheck-interop/1.0.3/proptest_quickcheck_interop/fn.from_qc.html
-//! [`from_qc_sized`]: https://docs.rs/proptest-quickcheck-interop/1.0.3/proptest_quickcheck_interop/fn.from_qc_sized.html
+//! [`from_qc`]: https://docs.rs/proptest-quickcheck-interop/1.0.4/proptest_quickcheck_interop/fn.from_qc.html
+//! [`from_qc_sized`]: https://docs.rs/proptest-quickcheck-interop/1.0.4/proptest_quickcheck_interop/fn.from_qc_sized.html
 //!
 //! [changelog]:
 //! https://github.com/Centril/proptest-quickcheck-interop/blob/master/CHANGELOG.md
@@ -139,7 +139,7 @@ use proptest::test_runner::TestRunner;
 ///
 /// [`Debug`]: https://doc.rust-lang.org/nightly/std/fmt/trait.Debug.html
 /// [`Arbitrary`]: https://docs.rs/quickcheck/0.5.0/quickcheck/trait.Arbitrary.html
-/// [`from_qc_sized`]: https://docs.rs/proptest-quickcheck-interop/1.0.3/proptest_quickcheck_interop/fn.from_qc_sized.html
+/// [`from_qc_sized`]: https://docs.rs/proptest-quickcheck-interop/1.0.4/proptest_quickcheck_interop/fn.from_qc_sized.html
 /// [`quickcheck`]: https://crates.io/crates/quickcheck
 /// [`Strategy`]: https://docs.rs/proptest/0.3.2/proptest/strategy/trait.Strategy.html
 pub fn from_qc<A: Arbitrary + Debug>() -> QCStrategy<A> {
@@ -195,7 +195,7 @@ pub struct QCStrategy<A: Arbitrary + Debug> {
 
 /// The [`ValueTree`] implementation for [`QCStrategy`].
 ///
-/// [`QCStrategy`]: https://docs.rs/proptest-quickcheck-interop/1.0.3/proptest_quickcheck_interop/struct.QCStrategy.html
+/// [`QCStrategy`]: https://docs.rs/proptest-quickcheck-interop/1.0.4/proptest_quickcheck_interop/struct.QCStrategy.html
 /// [`ValueTree`]: https://docs.rs/proptest/0.3.2/proptest/strategy/trait.ValueTree.html
 pub struct QCValueTree<A: Arbitrary + Debug> {
     curr: A,
@@ -329,41 +329,41 @@ impl<'a> Gen for XorShiftGen<'a> {
 // Tests
 //==============================================================================
 
-impl Clone for QCValueTree<Vec<u32>> {
-    /// Only implemented so that the implementation can be tested. Do **not**
-    /// consider this a public API, it may be removed at any time.
-    fn clone(&self) -> Self {
-        // We assume that:
-        //
-        // let x = A::arbitrary(gen);
-        // let s1 = x.clone().shrink();
-        // let s2 = x.shrink();
-        // assert_eq(s1.collect::<Vec<A>>(), s2.collect::<Vec<A>>());
-        //
-        // always holds. In other words, that shrinking is deterministic.
-        // We also assume that:
-        //
-        // A::arbitrary(gen);
-        // let s = x.shrink();
-        // let y = x.next()?;
-        // assert_eq!(x.next(), y.shrink().next());
-        //
-        // always holds.
-        //
-        // It may not actually hold for all A, but we don't care, as we only
-        // provide Clone for testing purposes and we pick A = u32 for which
-        // it always holds.
-        QCValueTree {
-            prev: self.prev.clone(),
-            curr: self.curr.clone(),
-            shrinker: self.curr.shrink()
-        }
-    }
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    impl Clone for QCValueTree<Vec<u32>> {
+        /// Only implemented so that the implementation can be tested.
+        /// As to why this is not a public API, read the note below.
+        fn clone(&self) -> Self {
+            // We assume that:
+            //
+            // let x = A::arbitrary(gen);
+            // let s1 = x.clone().shrink();
+            // let s2 = x.shrink();
+            // assert_eq(s1.collect::<Vec<A>>(), s2.collect::<Vec<A>>());
+            //
+            // always holds. In other words, that shrinking is deterministic.
+            // We also assume that:
+            //
+            // A::arbitrary(gen);
+            // let s = x.shrink();
+            // let y = x.next()?;
+            // assert_eq!(x.next(), y.shrink().next());
+            //
+            // always holds.
+            //
+            // It may not actually hold for all A, but we don't care, as we only
+            // provide Clone for testing purposes and we pick A = u32 for which
+            // it always holds.
+            QCValueTree {
+                prev: self.prev.clone(),
+                curr: self.curr.clone(),
+                shrinker: self.curr.shrink()
+            }
+        }
+    }
 
     #[test]
     fn contract_followed_by_qc_strategy() {
