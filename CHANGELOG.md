@@ -1,3 +1,11 @@
+# 1.0.4
+
+## Fixes
+
+- Removed `impl Clone for QCValueTree<Vec<u32>>` from public API, this was
+  previously noted as forever unstable, but it was moved to `mod tests` to
+  make this clearer and not subject to accidental breakage.
+
 # 1.0.3
 
 ## Fixes
