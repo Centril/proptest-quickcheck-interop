@@ -39,7 +39,7 @@
 //! [dependencies]
 //!
 //! quickcheck = "0.5.0"
-//! proptest   = "0.3.2"
+//! proptest   = "0.3.4"
 //! ```
 //!
 //! Now add this crate to your dependencies:
@@ -48,8 +48,8 @@
 //! [dependencies]
 //!
 //! quickcheck = "0.5.0"
-//! proptest   = "0.3.2"
-//! proptest_quickcheck_interop = "1.0.4"
+//! proptest   = "0.3.4"
+//! proptest_quickcheck_interop = "1.0.5"
 //! ```
 //!
 //! Let's now assume that `usize` is a complex type for which you have
@@ -87,8 +87,8 @@
 //! you may instead use [`from_qc_sized(size)`][`from_qc_sized`]. If you use,
 //! [`from_qc`], then the default size used by quickcheck is used.
 //!
-//! [`from_qc`]: https://docs.rs/proptest-quickcheck-interop/1.0.4/proptest_quickcheck_interop/fn.from_qc.html
-//! [`from_qc_sized`]: https://docs.rs/proptest-quickcheck-interop/1.0.4/proptest_quickcheck_interop/fn.from_qc_sized.html
+//! [`from_qc`]: https://docs.rs/proptest-quickcheck-interop/1.0.5/proptest_quickcheck_interop/fn.from_qc.html
+//! [`from_qc_sized`]: https://docs.rs/proptest-quickcheck-interop/1.0.5/proptest_quickcheck_interop/fn.from_qc_sized.html
 //!
 //! [changelog]:
 //! https://github.com/Centril/proptest-quickcheck-interop/blob/master/CHANGELOG.md
@@ -101,7 +101,7 @@
 //!
 //! [`quickcheck`]: https://crates.io/crates/quickcheck
 //!
-//! [`Strategy`]: https://docs.rs/proptest/0.3.2/proptest/strategy/trait.Strategy.html
+//! [`Strategy`]: https://docs.rs/proptest/0.3.4/proptest/strategy/trait.Strategy.html
 
 #![deny(missing_docs)]
 
@@ -139,9 +139,9 @@ use proptest::test_runner::TestRunner;
 ///
 /// [`Debug`]: https://doc.rust-lang.org/nightly/std/fmt/trait.Debug.html
 /// [`Arbitrary`]: https://docs.rs/quickcheck/0.5.0/quickcheck/trait.Arbitrary.html
-/// [`from_qc_sized`]: https://docs.rs/proptest-quickcheck-interop/1.0.4/proptest_quickcheck_interop/fn.from_qc_sized.html
+/// [`from_qc_sized`]: https://docs.rs/proptest-quickcheck-interop//proptest_quickcheck_interop/fn.from_qc_sized.html
 /// [`quickcheck`]: https://crates.io/crates/quickcheck
-/// [`Strategy`]: https://docs.rs/proptest/0.3.2/proptest/strategy/trait.Strategy.html
+/// [`Strategy`]: https://docs.rs/proptest/0.3.4/proptest/strategy/trait.Strategy.html
 pub fn from_qc<A: Arbitrary + Debug>() -> QCStrategy<A> {
     QCStrategy::new(qc_gen_size())
 }
@@ -169,7 +169,7 @@ fn qc_gen_size() -> usize {
 /// [`Debug`]: https://doc.rust-lang.org/nightly/std/fmt/trait.Debug.html
 /// [`Arbitrary`]: https://docs.rs/quickcheck/0.5.0/quickcheck/trait.Arbitrary.html
 /// [`quickcheck`]: https://crates.io/crates/quickcheck
-/// [`Strategy`]: https://docs.rs/proptest/0.3.2/proptest/strategy/trait.Strategy.html
+/// [`Strategy`]: https://docs.rs/proptest/0.3.4/proptest/strategy/trait.Strategy.html
 pub fn from_qc_sized<A: Arbitrary + Debug>(size: usize) -> QCStrategy<A> {
     QCStrategy::new(size)
 }
@@ -186,7 +186,7 @@ pub fn from_qc_sized<A: Arbitrary + Debug>(size: usize) -> QCStrategy<A> {
 /// [`Debug`]: https://doc.rust-lang.org/nightly/std/fmt/trait.Debug.html
 /// [`Arbitrary`]: https://docs.rs/quickcheck/0.5.0/quickcheck/trait.Arbitrary.html
 /// [`quickcheck`]: https://crates.io/crates/quickcheck
-/// [`Strategy`]: https://docs.rs/proptest/0.3.2/proptest/strategy/trait.Strategy.html
+/// [`Strategy`]: https://docs.rs/proptest/0.3.4/proptest/strategy/trait.Strategy.html
 #[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Debug)]
 pub struct QCStrategy<A: Arbitrary + Debug> {
     __ph: PhantomData<A>,
@@ -195,9 +195,9 @@ pub struct QCStrategy<A: Arbitrary + Debug> {
 
 /// The [`ValueTree`] implementation for [`QCStrategy`].
 ///
-/// [`QCStrategy`]: https://docs.rs/proptest-quickcheck-interop/1.0.4/proptest_quickcheck_interop/struct.QCStrategy.html
-/// [`ValueTree`]: https://docs.rs/proptest/0.3.2/proptest/strategy/trait.ValueTree.html
-pub struct QCValueTree<A: Arbitrary + Debug> {
+/// [`QCStrategy`]: https://docs.rs/proptest-quickcheck-interop//proptest_quickcheck_interop/struct.QCStrategy.html
+/// [`ValueTree`]: https://docs.rs/proptest/0.3.4/proptest/strategy/trait.ValueTree.html
+pub struct QCValueTree<A: Debug> {
     curr: A,
     prev: Option<A>,
     shrinker: Box<Iterator<Item = A>>
@@ -218,7 +218,7 @@ impl<A: Arbitrary + Debug> QCStrategy<A> {
     }
 }
 
-impl<A: Arbitrary + Debug> QCValueTree<A> {
+impl<A: Debug> QCValueTree<A> {
     /// Constructs a new `QCValueTree`, that is the [`ValueTree`] for
     /// [`QCStrategy`] given:
     /// + the current value,
@@ -245,7 +245,7 @@ impl<A: Arbitrary + Debug> Strategy for QCStrategy<A> {
     }
 }
 
-impl<A: Arbitrary + Debug> ValueTree for QCValueTree<A> {
+impl<A: Clone + Debug> ValueTree for QCValueTree<A> {
     type Value = A;
 
     fn current(&self) -> Self::Value {
@@ -279,7 +279,7 @@ impl<A: Arbitrary + Debug> ValueTree for QCValueTree<A> {
     }
 }
 
-impl<A: Arbitrary + Debug> Debug for QCValueTree<A> {
+impl<A: Debug> Debug for QCValueTree<A> {
     fn fmt(&self, fmt: &mut Formatter) -> FResult {
         fmt.debug_struct("QCValueTree")
            .field("curr", &self.curr)
