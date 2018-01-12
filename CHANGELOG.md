@@ -1,3 +1,7 @@
+# 1.0.5
+
+- Loosened bounds on `QCValueTree`. This should have zero effect on client code.
+
 # 1.0.4
 
 ## Fixes
