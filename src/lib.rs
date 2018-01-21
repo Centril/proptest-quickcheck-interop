@@ -38,8 +38,8 @@
 //! ```toml 
 //! [dependencies]
 //!
-//! quickcheck = "0.5.0"
-//! proptest   = "0.3.4"
+//! quickcheck = "0.6.0"
+//! proptest   = "0.4.1"
 //! ```
 //!
 //! Now add this crate to your dependencies:
@@ -47,9 +47,9 @@
 //! ```toml
 //! [dependencies]
 //!
-//! quickcheck = "0.5.0"
-//! proptest   = "0.3.4"
-//! proptest_quickcheck_interop = "1.0.5"
+//! quickcheck = "0.6.0"
+//! proptest   = "0.4.1"
+//! proptest_quickcheck_interop = "2.0.0"
 //! ```
 //!
 //! Let's now assume that `usize` is a complex type for which you have
@@ -87,21 +87,21 @@
 //! you may instead use [`from_qc_sized(size)`][`from_qc_sized`]. If you use,
 //! [`from_qc`], then the default size used by quickcheck is used.
 //!
-//! [`from_qc`]: https://docs.rs/proptest-quickcheck-interop/1.0.5/proptest_quickcheck_interop/fn.from_qc.html
-//! [`from_qc_sized`]: https://docs.rs/proptest-quickcheck-interop/1.0.5/proptest_quickcheck_interop/fn.from_qc_sized.html
+//! [`from_qc`]: https://docs.rs/proptest-quickcheck-interop/2.0.0/proptest_quickcheck_interop/fn.from_qc.html
+//! [`from_qc_sized`]: https://docs.rs/proptest-quickcheck-interop/2.0.0/proptest_quickcheck_interop/fn.from_qc_sized.html
 //!
 //! [changelog]:
 //! https://github.com/Centril/proptest-quickcheck-interop/blob/master/CHANGELOG.md
 //!
 //! [`Debug`]: https://doc.rust-lang.org/nightly/std/fmt/trait.Debug.html
 //!
-//! [`Arbitrary`]: https://docs.rs/quickcheck/0.5.0/quickcheck/trait.Arbitrary.html
+//! [`Arbitrary`]: https://docs.rs/quickcheck/0.6.0/quickcheck/trait.Arbitrary.html
 //!
 //! [`proptest`]: https://crates.io/crates/proptest
 //!
 //! [`quickcheck`]: https://crates.io/crates/quickcheck
 //!
-//! [`Strategy`]: https://docs.rs/proptest/0.3.4/proptest/strategy/trait.Strategy.html
+//! [`Strategy`]: https://docs.rs/proptest/0.4.1/proptest/strategy/trait.Strategy.html
 
 #![deny(missing_docs)]
 
@@ -109,7 +109,6 @@
 // Imports:
 //==============================================================================
 
-extern crate rand;
 extern crate proptest;
 extern crate quickcheck as quickcheck_crate;
 
@@ -118,10 +117,10 @@ use std::marker::PhantomData;
 use std::fmt::{Debug, Formatter, Result as FResult};
 
 use quickcheck_crate::{Arbitrary, Gen, Rng};
-use rand::XorShiftRng;
 
 use proptest::strategy::*;
 use proptest::test_runner::TestRunner;
+use proptest::prelude::XorShiftRng;
 
 //==============================================================================
 // Convenience API:
@@ -138,16 +137,16 @@ use proptest::test_runner::TestRunner;
 /// you may instead use [`from_qc_sized`].
 ///
 /// [`Debug`]: https://doc.rust-lang.org/nightly/std/fmt/trait.Debug.html
-/// [`Arbitrary`]: https://docs.rs/quickcheck/0.5.0/quickcheck/trait.Arbitrary.html
+/// [`Arbitrary`]: https://docs.rs/quickcheck/0.6.0/quickcheck/trait.Arbitrary.html
 /// [`from_qc_sized`]: https://docs.rs/proptest-quickcheck-interop//proptest_quickcheck_interop/fn.from_qc_sized.html
 /// [`quickcheck`]: https://crates.io/crates/quickcheck
-/// [`Strategy`]: https://docs.rs/proptest/0.3.4/proptest/strategy/trait.Strategy.html
+/// [`Strategy`]: https://docs.rs/proptest/0.4.1/proptest/strategy/trait.Strategy.html
 pub fn from_qc<A: Arbitrary + Debug>() -> QCStrategy<A> {
     QCStrategy::new(qc_gen_size())
 }
 
 /// Copied from:
-/// https://docs.rs/quickcheck/0.5.0/src/quickcheck/tester.rs.html#35-41
+/// https://docs.rs/quickcheck/0.6.0/src/quickcheck/tester.rs.html#35-41
 /// TODO: Remove if @burntsushi makes this pub.
 fn qc_gen_size() -> usize {
     use std::env;
@@ -167,9 +166,9 @@ fn qc_gen_size() -> usize {
 /// of inputs. This parameter is passed to the implementation of `Arbitrary`.
 ///
 /// [`Debug`]: https://doc.rust-lang.org/nightly/std/fmt/trait.Debug.html
-/// [`Arbitrary`]: https://docs.rs/quickcheck/0.5.0/quickcheck/trait.Arbitrary.html
+/// [`Arbitrary`]: https://docs.rs/quickcheck/0.6.0/quickcheck/trait.Arbitrary.html
 /// [`quickcheck`]: https://crates.io/crates/quickcheck
-/// [`Strategy`]: https://docs.rs/proptest/0.3.4/proptest/strategy/trait.Strategy.html
+/// [`Strategy`]: https://docs.rs/proptest/0.4.1/proptest/strategy/trait.Strategy.html
 pub fn from_qc_sized<A: Arbitrary + Debug>(size: usize) -> QCStrategy<A> {
     QCStrategy::new(size)
 }
@@ -184,9 +183,9 @@ pub fn from_qc_sized<A: Arbitrary + Debug>(size: usize) -> QCStrategy<A> {
 /// get back the equivalent Strategy in proptest.
 ///
 /// [`Debug`]: https://doc.rust-lang.org/nightly/std/fmt/trait.Debug.html
-/// [`Arbitrary`]: https://docs.rs/quickcheck/0.5.0/quickcheck/trait.Arbitrary.html
+/// [`Arbitrary`]: https://docs.rs/quickcheck/0.6.0/quickcheck/trait.Arbitrary.html
 /// [`quickcheck`]: https://crates.io/crates/quickcheck
-/// [`Strategy`]: https://docs.rs/proptest/0.3.4/proptest/strategy/trait.Strategy.html
+/// [`Strategy`]: https://docs.rs/proptest/0.4.1/proptest/strategy/trait.Strategy.html
 #[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Debug)]
 pub struct QCStrategy<A: Arbitrary + Debug> {
     __ph: PhantomData<A>,
@@ -196,7 +195,7 @@ pub struct QCStrategy<A: Arbitrary + Debug> {
 /// The [`ValueTree`] implementation for [`QCStrategy`].
 ///
 /// [`QCStrategy`]: https://docs.rs/proptest-quickcheck-interop//proptest_quickcheck_interop/struct.QCStrategy.html
-/// [`ValueTree`]: https://docs.rs/proptest/0.3.4/proptest/strategy/trait.ValueTree.html
+/// [`ValueTree`]: https://docs.rs/proptest/0.4.1/proptest/strategy/trait.ValueTree.html
 pub struct QCValueTree<A: Debug> {
     curr: A,
     prev: Option<A>,
@@ -231,8 +230,6 @@ impl<A: Debug> QCValueTree<A> {
         Self { prev: None, curr, shrinker }
     }
 }
-
-type NewTree<S> = Result<<S as Strategy>::Value, String>;
 
 impl<A: Arbitrary + Debug> Strategy for QCStrategy<A> {
     type Value = QCValueTree<A>;
@@ -301,8 +298,8 @@ impl<A: Debug> Debug for QCValueTree<A> {
 /// controls the size of random values generated makes for an implementation
 /// of a [`Gen`].
 ///
-/// [`XorShiftRng`]: https://docs.rs/rand/0.3.18/rand/struct.XorShiftRng.html
-/// [`Gen`]: https://docs.rs/quickcheck/0.5.0/quickcheck/trait.Gen.html
+/// [`XorShiftRng`]: https://docs.rs/rand/0.4.2/rand/struct.XorShiftRng.html
+/// [`Gen`]: https://docs.rs/quickcheck/0.6.0/quickcheck/trait.Gen.html
 #[derive(Debug)]
 struct XorShiftGen<'a> {
     rng:  &'a mut XorShiftRng,

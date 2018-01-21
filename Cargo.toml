@@ -1,6 +1,6 @@
 [package]
 name          = "proptest-quickcheck-interop"
-version       = "1.0.5"
+version       = "2.0.0"
 authors       = ["Mazdak Farrokhzad <twingoow@gmail.com>"]
 license       = "MIT/Apache-2.0"
 readme        = "README.md"
@@ -16,6 +16,5 @@ Provides an interoperability layer for reuse of quickcheck::Arbitrary impls in p
 """
 
 [dependencies]
-rand       = "0.3.18"
-proptest   = "0.3.2"
-quickcheck = "0.5.0"
+proptest   = "0.4.1"
+quickcheck = "0.6.0"

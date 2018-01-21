@@ -1,3 +1,9 @@
+# 2.0.0
+
+Updating proptest to version 4.1 and quickcheck to 6.0.0.
+This is a breaking change wrt. public dependencies, so therefore the
+major version bump.
+
 # 1.0.5
 
 - Loosened bounds on `QCValueTree`. This should have zero effect on client code.
